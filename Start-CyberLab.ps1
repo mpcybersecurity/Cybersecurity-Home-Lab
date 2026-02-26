@@ -26,14 +26,12 @@ $ErrorActionPreference = "Stop"
 # ---------------------------------------------------------------------------
 # Self-elevate to Administrator if not already
 # ---------------------------------------------------------------------------
-if (-NOT ([Security.Principal.WindowsPrincipal]
-        [Security.Principal.WindowsIdentity]::GetCurrent()
-    ).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-
+$currentPrincipal = New-Object Security.Principal.WindowsPrincipal(
+    [Security.Principal.WindowsIdentity]::GetCurrent()
+)
+if (-NOT $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
     Write-Host "Requesting Administrator privileges..." -ForegroundColor Yellow
-    Start-Process PowerShell -ArgumentList `
-        "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" `
-        -Verb RunAs
+    Start-Process PowerShell -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs
     exit
 }
 
@@ -102,9 +100,9 @@ foreach ($module in $modules) {
     $modulePath = Join-Path $ScriptRoot "modules\$($module.File)"
 
     Write-Host ""
-    Write-Host "─" * 70 -ForegroundColor DarkGray
+    Write-Host ("─" * 70) -ForegroundColor DarkGray
     Write-LabStep "[$step/$totalSteps] $($module.Name)"
-    Write-Host "─" * 70 -ForegroundColor DarkGray
+    Write-Host ("─" * 70) -ForegroundColor DarkGray
 
     try {
         . $modulePath
