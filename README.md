@@ -88,7 +88,7 @@ Specifically: VT-x/AMD-V enabled in BIOS, 16 GB+ RAM, 150 GB+ free disk.
 ### 2. Download CyberLab
 
 ```
-git clone https://github.com/mpcybersecurity/cyberlab.git
+git clone https://github.com/mpcybersecurity/cybersecurity-home-lab.git
 cd cyberlab
 ```
 
